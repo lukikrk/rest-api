@@ -1,0 +1,48 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        App\Shared\Infrastructure\Symfony\Exception\ExceptionHandler:
+            tags: [ 'app.exception_handler' ]
+
+    App\Shared\CQRS\CommandBus: '@App\Shared\Infrastructure\Symfony\CQRS\CommandBus'
+
+    App\Shared\CQRS\CommandMapper: ~
+
+    App\Shared\CQRS\EventBus: '@App\Shared\Infrastructure\Symfony\CQRS\EventBus'
+
+    App\Shared\CQRS\QueryBus: '@App\Shared\Infrastructure\Symfony\CQRS\QueryBus'
+
+    App\Shared\Domain\Mapper\DtoMapper: ~
+
+    App\Shared\Infrastructure\Symfony\CQRS\CommandBus:
+        arguments: [ '@command.bus' ]
+
+    App\Shared\Infrastructure\Symfony\CQRS\EventBus:
+        arguments: [ '@event.bus' ]
+
+    App\Shared\Infrastructure\Symfony\CQRS\QueryBus:
+        arguments: [ '@query.bus' ]
+
+    App\Shared\Infrastructure\Symfony\Exception\Handler\GenericExceptionHandler: ~
+
+    App\Shared\Infrastructure\Symfony\Exception\Handler\HttpExceptionHandler: ~
+
+    App\Shared\Infrastructure\Symfony\Exception\Handler\ValidationFailedExceptionHandler: ~
+
+    App\Shared\Infrastructure\Symfony\Exception\Subscriber\ExceptionSubscriber: ~
+
+    App\Shared\Infrastructure\Symfony\Exception\ExceptionHandlerAggregator:
+        arguments:
+            - !tagged_iterator 'app.exception_handler'
+
+    App\Shared\Infrastructure\Symfony\Http\Response\Factory\RestApiResponseFactory: ~
+
+    App\Shared\Infrastructure\Symfony\Http\ResponseFactory:
+        '@App\Shared\Infrastructure\Symfony\Http\Response\Factory\RestApiResponseFactory'
+
+    App\Shared\Infrastructure\Symfony\Serialization\Serializer: ~
+
+    App\Shared\Serialization\Serializer: '@App\Shared\Infrastructure\Symfony\Serialization\Serializer'

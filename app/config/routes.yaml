@@ -1,0 +1,5 @@
+api_login:
+    path: /api/login
+
+app_product:
+    resource: '../src/Product/Resources/config/routes.yaml'

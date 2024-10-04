@@ -1,0 +1,41 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        App\Shared\CQRS\CommandHandler:
+            tags: { name: messenger.message_handler, bus: command.bus }
+
+        App\Shared\CQRS\EventHandler:
+            tags: { name: messenger.message_handler, bus: event.bus }
+
+        App\Shared\CQRS\QueryHandler:
+            tags: { name: messenger.message_handler, bus: query.bus }
+
+    App\Product\Application\CQRS\Command\CreateProductHandler: ~
+
+    App\Product\Application\CQRS\Query\GetProductHandler: ~
+
+    App\Product\Domain\Factory\ProductFactory: ~
+
+    App\Product\Domain\Repository\ProductRepository:
+        '@App\Product\Infrastructure\Doctrine\Repository\ORMProductRepository'
+
+    App\Product\Infrastructure\Doctrine\Repository\ORMProductRepository: ~
+
+    App\Product\Infrastructure\Symfony\Controller\:
+        resource: '../../Infrastructure/Symfony/Controller/*'
+        tags: [ 'controller.service_arguments' ]
+
+when@test:
+    services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
+        App\Product\Infrastructure\Fixture\Product\CommandProductFixture:
+            public: true
+
+        App\Product\Infrastructure\Fixture\ProductFixture:
+            '@App\Product\Infrastructure\Fixture\Product\CommandProductFixture'

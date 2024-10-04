@@ -1,0 +1,11 @@
+imports:
+    - { resource: '../src/Product/Resources/config/services.yaml' }
+    - { resource: '../src/Shared/Resources/config/services.yaml' }
+
+parameters:
+    coins_for_registration: 60
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
